@@ -2,7 +2,7 @@
 
 A personal tracing config initialize lib, with symlinking and local offset timezone.
 
-<img width="530" alt="image" src="https://user-images.githubusercontent.com/1589842/191416973-d6cb8a6a-7d46-4221-b794-6a1ab418da34.png">
+<img width="543" alt="image" src="https://user-images.githubusercontent.com/1589842/191417363-71f134a3-e23b-4e95-a0c7-22237799af8a.png">
 
 Use these formats:
 
