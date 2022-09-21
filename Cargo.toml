@@ -1,0 +1,18 @@
+[package]
+name = "clia-tracing-config"
+version = "0.1.0"
+edition = "2021"
+authors = ["clia <clia@163.com>"]
+description = "A personal tracing config initialize lib, with symlinking and local offset timezone."
+homepage = "https://github.com/clia/tracing-config"
+repository = "https://github.com/clia/tracing-config"
+license = "MIT"
+readme = "README.md"
+keywords = [ "tracing", "log"]
+
+[dependencies]
+clia-time = "0.3"
+time = { version = "0.3", features = ["macros"] }
+tracing = "0.1"
+tracing-appender = { package = "clia-tracing-appender", version = "0.2" }
+tracing-subscriber = { version = "0.3", features = ["std", "fmt", "env-filter", "tracing-log", "time", "local-time"] }
