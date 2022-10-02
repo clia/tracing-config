@@ -1,10 +1,10 @@
 # clia-tracing-config
 
-A personal tracing config initialize lib, with symlinking and local offset timezone.
+A convenient tracing config and init lib, with symlinking and local timezone.
 
 <img width="543" alt="image" src="https://user-images.githubusercontent.com/1589842/191417363-71f134a3-e23b-4e95-a0c7-22237799af8a.png">
 
-Use these formats:
+Use these formats default, and can be configured:
 
 - pretty()
 - with_level(true)
@@ -19,7 +19,7 @@ Code example and default values:
 
 ```rust
 let _guard = clia_tracing_config::build()
-    .with_level("info")
+    .filter_level("info")
     .with_ansi(true)
     .to_stdout(false)
     .directory("./logs")
