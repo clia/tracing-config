@@ -49,6 +49,8 @@ impl Default for TracingConfig {
 
 impl TracingConfig {
     /// Will try_from_default_env while not setted.
+    /// 
+    /// tracing::Level
     ///
     /// Will panic if level is wrong.
     pub fn filter_level(mut self, filter_level: &str) -> Self {
@@ -68,19 +70,19 @@ impl TracingConfig {
         self
     }
 
-    /// Setting log file directory.
+    /// Set log file directory.
     pub fn directory(mut self, directory: &str) -> Self {
         self.directory = directory.to_owned();
         self
     }
 
-    /// Setting log file name.
+    /// Set log file name.
     pub fn file_name(mut self, file_name: &str) -> Self {
         self.file_name = file_name.to_owned();
         self
     }
 
-    /// Valid value: minutely | hourly | daily | never
+    /// Valid values: minutely | hourly | daily | never
     ///
     /// Will panic on other values.
     pub fn rolling(mut self, rolling: &str) -> Self {
@@ -98,7 +100,7 @@ impl TracingConfig {
         self
     }
 
-    /// Valid value: pretty | compact | json | full
+    /// Valid values: pretty | compact | json | full
     ///
     /// Will panic on other values.
     pub fn format(mut self, format: &str) -> Self {
@@ -144,6 +146,8 @@ impl TracingConfig {
     }
 
     /// Init tracing log.
+    /// 
+    /// Caller should hold the guard.
     pub fn init(self) -> WorkerGuard {
         // Tracing appender init.
         let file_appender = match self.rolling {
@@ -162,7 +166,7 @@ impl TracingConfig {
         };
         let (file_writer, guard) = tracing_appender::non_blocking(file_appender);
 
-        // Local offset timezone init.
+        // Local offset timezone init, and set time format.
         let offset_sec = CliaUtcOffset::current_local_offset()
             .expect("Can not get local offset!")
             .whole_seconds();
