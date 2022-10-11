@@ -13,6 +13,7 @@ const FORMAT_JSON: &'static str = "json";
 const FORMAT_FULL: &'static str = "full";
 
 /// The tracing configuration properties.
+#[derive(Debug, Clone)]
 pub struct TracingConfig {
     filter_level: tracing::Level,
     with_ansi: bool,
@@ -49,7 +50,7 @@ impl Default for TracingConfig {
 
 impl TracingConfig {
     /// Will try_from_default_env while not setted.
-    /// 
+    ///
     /// tracing::Level
     ///
     /// Will panic if level is wrong.
@@ -146,7 +147,7 @@ impl TracingConfig {
     }
 
     /// Init tracing log.
-    /// 
+    ///
     /// Caller should hold the guard.
     pub fn init(self) -> WorkerGuard {
         // Tracing appender init.
