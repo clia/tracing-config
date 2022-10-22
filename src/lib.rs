@@ -1,4 +1,4 @@
-use std::str::FromStr;
+//! A convenient tracing config and init lib, with symlinking and local timezone.
 
 use clia_time::UtcOffset as CliaUtcOffset;
 use time::macros::format_description;
@@ -15,7 +15,7 @@ const FORMAT_FULL: &'static str = "full";
 /// The tracing configuration properties.
 #[derive(Debug, Clone)]
 pub struct TracingConfig {
-    filter_level: tracing::Level,
+    filter_level: String,
     with_ansi: bool,
     to_stdout: bool,
     directory: String,
@@ -32,7 +32,7 @@ pub struct TracingConfig {
 impl Default for TracingConfig {
     fn default() -> Self {
         TracingConfig {
-            filter_level: tracing::Level::INFO,
+            filter_level: "info".to_owned(),
             with_ansi: true,
             to_stdout: false,
             directory: "./logs".to_owned(),
@@ -51,11 +51,12 @@ impl Default for TracingConfig {
 impl TracingConfig {
     /// Will try_from_default_env while not setted.
     ///
-    /// tracing::Level
+    /// You can use value like "info", or something like "mycrate=trace".
+    /// 
+    /// Default value if "info".
     ///
-    /// Will panic if level is wrong.
     pub fn filter_level(mut self, filter_level: &str) -> Self {
-        self.filter_level = tracing::Level::from_str(filter_level).unwrap();
+        self.filter_level = filter_level.to_owned();
         self
     }
 
