@@ -185,15 +185,9 @@ impl TracingConfig {
             .with_timer(timer)
             .with_ansi(self.with_ansi);
 
-        let s = if self.to_stdout {
-            s.with_writer(std::io::stdout).with_writer(file_writer)
-        } else {
-            s.with_writer(file_writer)
-        };
-
         // Format switch.
         if self.format == FORMAT_PRETTY {
-            s.event_format(
+            let s = s.event_format(
                 fmt::format()
                     .pretty()
                     .with_level(self.with_level)
@@ -201,10 +195,14 @@ impl TracingConfig {
                     .with_thread_ids(self.with_thread_ids)
                     .with_thread_names(self.with_thread_names)
                     .with_source_location(self.with_source_location),
-            )
-            .init();
+            );
+            if self.to_stdout {
+                s.with_writer(std::io::stdout).init();
+            } else {
+                s.with_writer(file_writer).init();
+            };
         } else if self.format == FORMAT_COMPACT {
-            s.event_format(
+            let s = s.event_format(
                 fmt::format()
                     .compact()
                     .with_level(self.with_level)
@@ -212,10 +210,14 @@ impl TracingConfig {
                     .with_thread_ids(self.with_thread_ids)
                     .with_thread_names(self.with_thread_names)
                     .with_source_location(self.with_source_location),
-            )
-            .init();
+            );
+            if self.to_stdout {
+                s.with_writer(std::io::stdout).init();
+            } else {
+                s.with_writer(file_writer).init();
+            };
         } else if self.format == FORMAT_JSON {
-            s.event_format(
+            let s = s.event_format(
                 fmt::format()
                     .json()
                     .with_level(self.with_level)
@@ -223,18 +225,26 @@ impl TracingConfig {
                     .with_thread_ids(self.with_thread_ids)
                     .with_thread_names(self.with_thread_names)
                     .with_source_location(self.with_source_location),
-            )
-            .init();
+            );
+            if self.to_stdout {
+                s.with_writer(std::io::stdout).init();
+            } else {
+                s.with_writer(file_writer).init();
+            };
         } else if self.format == FORMAT_FULL {
-            s.event_format(
+            let s = s.event_format(
                 fmt::format()
                     .with_level(self.with_level)
                     .with_target(self.with_target)
                     .with_thread_ids(self.with_thread_ids)
                     .with_thread_names(self.with_thread_names)
                     .with_source_location(self.with_source_location),
-            )
-            .init();
+            );
+            if self.to_stdout {
+                s.with_writer(std::io::stdout).init();
+            } else {
+                s.with_writer(file_writer).init();
+            };
         }
 
         // Caller should hold this handler.

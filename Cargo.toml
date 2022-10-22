@@ -1,6 +1,6 @@
 [package]
 name = "clia-tracing-config"
-version = "0.2.3"
+version = "0.2.4"
 edition = "2021"
 authors = ["clia <clia@163.com>"]
 description = "A convenient tracing config and init lib, with symlinking and local timezone."
