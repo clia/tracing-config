@@ -1,8 +1,6 @@
 //! A convenient tracing config and init lib, with symlinking and local timezone.
 
-use clia_time::UtcOffset as CliaUtcOffset;
 use time::macros::format_description;
-use time::UtcOffset;
 use tracing_appender::non_blocking::WorkerGuard;
 use tracing_subscriber::fmt;
 use tracing_subscriber::fmt::time::OffsetTime;
@@ -52,7 +50,7 @@ impl TracingConfig {
     /// Will try_from_default_env while not setted.
     ///
     /// You can use value like "info", or something like "mycrate=trace".
-    /// 
+    ///
     /// Default value if "info".
     ///
     pub fn filter_level(mut self, filter_level: &str) -> Self {
@@ -169,11 +167,7 @@ impl TracingConfig {
         let (file_writer, guard) = tracing_appender::non_blocking(file_appender);
 
         // Local offset timezone init, and set time format.
-        let offset_sec = CliaUtcOffset::current_local_offset()
-            .expect("Can not get local offset!")
-            .whole_seconds();
-        let offset =
-            UtcOffset::from_whole_seconds(offset_sec).expect("Can not from whole seconds!");
+        let offset = clia_local_offset::current_local_offset().expect("Can not get local offset!");
         let timer = OffsetTime::new(
             offset,
             format_description!(
