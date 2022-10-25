@@ -168,12 +168,14 @@ impl TracingConfig {
 
         // Local offset timezone init, and set time format.
         let offset = clia_local_offset::current_local_offset().expect("Can not get local offset!");
+// println!("offset: {:?}", offset);
         let timer = OffsetTime::new(
             offset,
             format_description!(
                 "[year]-[month]-[day] [hour]:[minute]:[second].[subsecond digits:3]"
             ),
         );
+// println!("timer: {:?}", timer);
 
         // Tracing subscriber init.
         let s = tracing_subscriber::fmt()
@@ -182,7 +184,7 @@ impl TracingConfig {
                     tracing_subscriber::EnvFilter::new(&format!("{}", self.filter_level)),
                 ),
             )
-            .with_timer(timer)
+            // .with_timer(timer)
             .with_ansi(self.with_ansi);
 
         // Format switch.
@@ -195,7 +197,8 @@ impl TracingConfig {
                     .with_thread_ids(self.with_thread_ids)
                     .with_thread_names(self.with_thread_names)
                     .with_source_location(self.with_source_location),
-            );
+            )
+            .with_timer(timer);
             if self.to_stdout {
                 s.with_writer(std::io::stdout).init();
             } else {
@@ -210,7 +213,8 @@ impl TracingConfig {
                     .with_thread_ids(self.with_thread_ids)
                     .with_thread_names(self.with_thread_names)
                     .with_source_location(self.with_source_location),
-            );
+            )
+            .with_timer(timer);
             if self.to_stdout {
                 s.with_writer(std::io::stdout).init();
             } else {
@@ -225,7 +229,8 @@ impl TracingConfig {
                     .with_thread_ids(self.with_thread_ids)
                     .with_thread_names(self.with_thread_names)
                     .with_source_location(self.with_source_location),
-            );
+            )
+            .with_timer(timer);
             if self.to_stdout {
                 s.with_writer(std::io::stdout).init();
             } else {
@@ -239,7 +244,8 @@ impl TracingConfig {
                     .with_thread_ids(self.with_thread_ids)
                     .with_thread_names(self.with_thread_names)
                     .with_source_location(self.with_source_location),
-            );
+            )
+            .with_timer(timer);
             if self.to_stdout {
                 s.with_writer(std::io::stdout).init();
             } else {
