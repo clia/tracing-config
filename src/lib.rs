@@ -1,7 +1,7 @@
 //! A convenient tracing config and init lib, with symlinking and local timezone.
 
 use time::macros::format_description;
-use tracing_appender::non_blocking::WorkerGuard;
+pub use tracing_appender::non_blocking::WorkerGuard;
 use tracing_subscriber::fmt;
 use tracing_subscriber::fmt::time::OffsetTime;
 
