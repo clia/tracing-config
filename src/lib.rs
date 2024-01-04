@@ -5,10 +5,10 @@ pub use tracing_appender::non_blocking::WorkerGuard;
 use tracing_subscriber::fmt;
 use tracing_subscriber::fmt::time::OffsetTime;
 
-const FORMAT_PRETTY: &'static str = "pretty";
-const FORMAT_COMPACT: &'static str = "compact";
-const FORMAT_JSON: &'static str = "json";
-const FORMAT_FULL: &'static str = "full";
+const FORMAT_PRETTY: &str = "pretty";
+const FORMAT_COMPACT: &str = "compact";
+const FORMAT_JSON: &str = "json";
+const FORMAT_FULL: &str = "full";
 
 /// The tracing configuration properties.
 #[derive(Debug, Clone)]
@@ -181,7 +181,7 @@ impl TracingConfig {
         let s = tracing_subscriber::fmt()
             .with_env_filter(
                 tracing_subscriber::EnvFilter::try_from_default_env().unwrap_or(
-                    tracing_subscriber::EnvFilter::new(&format!("{}", self.filter_level)),
+                    tracing_subscriber::EnvFilter::new(&self.filter_level),
                 ),
             )
             // .with_timer(timer)
