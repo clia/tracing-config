@@ -168,14 +168,14 @@ impl TracingConfig {
 
         // Local offset timezone init, and set time format.
         let offset = clia_local_offset::current_local_offset().expect("Can not get local offset!");
-// println!("offset: {:?}", offset);
+        // println!("offset: {:?}", offset);
         let timer = OffsetTime::new(
             offset,
             format_description!(
                 "[year]-[month]-[day] [hour]:[minute]:[second].[subsecond digits:3]"
             ),
         );
-// println!("timer: {:?}", timer);
+        // println!("timer: {:?}", timer);
 
         // Tracing subscriber init.
         let s = tracing_subscriber::fmt()
@@ -189,63 +189,67 @@ impl TracingConfig {
 
         // Format switch.
         if self.format == FORMAT_PRETTY {
-            let s = s.event_format(
-                fmt::format()
-                    .pretty()
-                    .with_level(self.with_level)
-                    .with_target(self.with_target)
-                    .with_thread_ids(self.with_thread_ids)
-                    .with_thread_names(self.with_thread_names)
-                    .with_source_location(self.with_source_location),
-            )
-            .with_timer(timer);
+            let s = s
+                .event_format(
+                    fmt::format()
+                        .pretty()
+                        .with_level(self.with_level)
+                        .with_target(self.with_target)
+                        .with_thread_ids(self.with_thread_ids)
+                        .with_thread_names(self.with_thread_names)
+                        .with_source_location(self.with_source_location),
+                )
+                .with_timer(timer);
             if self.to_stdout {
                 s.with_writer(std::io::stdout).init();
             } else {
                 s.with_writer(file_writer).init();
             };
         } else if self.format == FORMAT_COMPACT {
-            let s = s.event_format(
-                fmt::format()
-                    .compact()
-                    .with_level(self.with_level)
-                    .with_target(self.with_target)
-                    .with_thread_ids(self.with_thread_ids)
-                    .with_thread_names(self.with_thread_names)
-                    .with_source_location(self.with_source_location),
-            )
-            .with_timer(timer);
+            let s = s
+                .event_format(
+                    fmt::format()
+                        .compact()
+                        .with_level(self.with_level)
+                        .with_target(self.with_target)
+                        .with_thread_ids(self.with_thread_ids)
+                        .with_thread_names(self.with_thread_names)
+                        .with_source_location(self.with_source_location),
+                )
+                .with_timer(timer);
             if self.to_stdout {
                 s.with_writer(std::io::stdout).init();
             } else {
                 s.with_writer(file_writer).init();
             };
         } else if self.format == FORMAT_JSON {
-            let s = s.event_format(
-                fmt::format()
-                    .json()
-                    .with_level(self.with_level)
-                    .with_target(self.with_target)
-                    .with_thread_ids(self.with_thread_ids)
-                    .with_thread_names(self.with_thread_names)
-                    .with_source_location(self.with_source_location),
-            )
-            .with_timer(timer);
+            let s = s
+                .event_format(
+                    fmt::format()
+                        .json()
+                        .with_level(self.with_level)
+                        .with_target(self.with_target)
+                        .with_thread_ids(self.with_thread_ids)
+                        .with_thread_names(self.with_thread_names)
+                        .with_source_location(self.with_source_location),
+                )
+                .with_timer(timer);
             if self.to_stdout {
-                s.with_writer(std::io::stdout).init();
+                s.json().with_writer(std::io::stdout).init();
             } else {
-                s.with_writer(file_writer).init();
+                s.json().with_writer(file_writer).init();
             };
         } else if self.format == FORMAT_FULL {
-            let s = s.event_format(
-                fmt::format()
-                    .with_level(self.with_level)
-                    .with_target(self.with_target)
-                    .with_thread_ids(self.with_thread_ids)
-                    .with_thread_names(self.with_thread_names)
-                    .with_source_location(self.with_source_location),
-            )
-            .with_timer(timer);
+            let s = s
+                .event_format(
+                    fmt::format()
+                        .with_level(self.with_level)
+                        .with_target(self.with_target)
+                        .with_thread_ids(self.with_thread_ids)
+                        .with_thread_names(self.with_thread_names)
+                        .with_source_location(self.with_source_location),
+                )
+                .with_timer(timer);
             if self.to_stdout {
                 s.with_writer(std::io::stdout).init();
             } else {
