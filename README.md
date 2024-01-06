@@ -37,3 +37,15 @@ log::info!("logged by tracing");
 - hourly
 - daily
 - never
+
+## Changelog
+
+- 0.2.7: Fix json fmt error. (2024-1-6)
+- 0.2.6: Make pub use WorkerGuard. (2023-12-17)
+- 0.2.5: Fix timer problem (no effect). (2022-10-25)
+- 0.2.4: Fix to_stdout impl. (2022-10-22)
+- 0.2.3: Change clia-time to clia-local-offset. (2022-10-22)
+- 0.2.2: Make level support expr. (2022-10-22)
+- 0.2.1: Add Debug & Clone. (2022-10-11)
+- 0.2.0: Refacted impl. (2022-10-2)
+- 0.1.0: Initial release. (2022-9-21)
