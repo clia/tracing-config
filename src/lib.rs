@@ -5,10 +5,10 @@ pub use tracing_appender::non_blocking::WorkerGuard;
 use tracing_subscriber::fmt;
 use tracing_subscriber::fmt::time::OffsetTime;
 
-const FORMAT_PRETTY: &'static str = "pretty";
-const FORMAT_COMPACT: &'static str = "compact";
-const FORMAT_JSON: &'static str = "json";
-const FORMAT_FULL: &'static str = "full";
+const FORMAT_PRETTY: &str = "pretty";
+const FORMAT_COMPACT: &str = "compact";
+const FORMAT_JSON: &str = "json";
+const FORMAT_FULL: &str = "full";
 
 /// The tracing configuration properties.
 #[derive(Debug, Clone)]
@@ -168,20 +168,20 @@ impl TracingConfig {
 
         // Local offset timezone init, and set time format.
         let offset = clia_local_offset::current_local_offset().expect("Can not get local offset!");
-// println!("offset: {:?}", offset);
+        // println!("offset: {:?}", offset);
         let timer = OffsetTime::new(
             offset,
             format_description!(
                 "[year]-[month]-[day] [hour]:[minute]:[second].[subsecond digits:3]"
             ),
         );
-// println!("timer: {:?}", timer);
+        // println!("timer: {:?}", timer);
 
         // Tracing subscriber init.
         let s = tracing_subscriber::fmt()
             .with_env_filter(
                 tracing_subscriber::EnvFilter::try_from_default_env().unwrap_or(
-                    tracing_subscriber::EnvFilter::new(&format!("{}", self.filter_level)),
+                    tracing_subscriber::EnvFilter::new(&self.filter_level),
                 ),
             )
             // .with_timer(timer)
@@ -189,63 +189,67 @@ impl TracingConfig {
 
         // Format switch.
         if self.format == FORMAT_PRETTY {
-            let s = s.event_format(
-                fmt::format()
-                    .pretty()
-                    .with_level(self.with_level)
-                    .with_target(self.with_target)
-                    .with_thread_ids(self.with_thread_ids)
-                    .with_thread_names(self.with_thread_names)
-                    .with_source_location(self.with_source_location),
-            )
-            .with_timer(timer);
+            let s = s
+                .event_format(
+                    fmt::format()
+                        .pretty()
+                        .with_level(self.with_level)
+                        .with_target(self.with_target)
+                        .with_thread_ids(self.with_thread_ids)
+                        .with_thread_names(self.with_thread_names)
+                        .with_source_location(self.with_source_location),
+                )
+                .with_timer(timer);
             if self.to_stdout {
                 s.with_writer(std::io::stdout).init();
             } else {
                 s.with_writer(file_writer).init();
             };
         } else if self.format == FORMAT_COMPACT {
-            let s = s.event_format(
-                fmt::format()
-                    .compact()
-                    .with_level(self.with_level)
-                    .with_target(self.with_target)
-                    .with_thread_ids(self.with_thread_ids)
-                    .with_thread_names(self.with_thread_names)
-                    .with_source_location(self.with_source_location),
-            )
-            .with_timer(timer);
+            let s = s
+                .event_format(
+                    fmt::format()
+                        .compact()
+                        .with_level(self.with_level)
+                        .with_target(self.with_target)
+                        .with_thread_ids(self.with_thread_ids)
+                        .with_thread_names(self.with_thread_names)
+                        .with_source_location(self.with_source_location),
+                )
+                .with_timer(timer);
             if self.to_stdout {
                 s.with_writer(std::io::stdout).init();
             } else {
                 s.with_writer(file_writer).init();
             };
         } else if self.format == FORMAT_JSON {
-            let s = s.event_format(
-                fmt::format()
-                    .json()
-                    .with_level(self.with_level)
-                    .with_target(self.with_target)
-                    .with_thread_ids(self.with_thread_ids)
-                    .with_thread_names(self.with_thread_names)
-                    .with_source_location(self.with_source_location),
-            )
-            .with_timer(timer);
+            let s = s
+                .event_format(
+                    fmt::format()
+                        .json()
+                        .with_level(self.with_level)
+                        .with_target(self.with_target)
+                        .with_thread_ids(self.with_thread_ids)
+                        .with_thread_names(self.with_thread_names)
+                        .with_source_location(self.with_source_location),
+                )
+                .with_timer(timer);
             if self.to_stdout {
-                s.with_writer(std::io::stdout).init();
+                s.json().with_writer(std::io::stdout).init();
             } else {
-                s.with_writer(file_writer).init();
+                s.json().with_writer(file_writer).init();
             };
         } else if self.format == FORMAT_FULL {
-            let s = s.event_format(
-                fmt::format()
-                    .with_level(self.with_level)
-                    .with_target(self.with_target)
-                    .with_thread_ids(self.with_thread_ids)
-                    .with_thread_names(self.with_thread_names)
-                    .with_source_location(self.with_source_location),
-            )
-            .with_timer(timer);
+            let s = s
+                .event_format(
+                    fmt::format()
+                        .with_level(self.with_level)
+                        .with_target(self.with_target)
+                        .with_thread_ids(self.with_thread_ids)
+                        .with_thread_names(self.with_thread_names)
+                        .with_source_location(self.with_source_location),
+                )
+                .with_timer(timer);
             if self.to_stdout {
                 s.with_writer(std::io::stdout).init();
             } else {
